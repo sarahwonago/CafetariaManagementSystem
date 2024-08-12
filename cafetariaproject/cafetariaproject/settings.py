@@ -40,7 +40,8 @@ INSTALLED_APPS = [
     "django.contrib.staticfiles",
 
     #custom-apps
-    "cafetaria.apps.CafetariaConfig",
+    "myapps.account.apps.AccountConfig",
+    "myapps.cafetaria.apps.CafetariaConfig",
 ]
 
 MIDDLEWARE = [
