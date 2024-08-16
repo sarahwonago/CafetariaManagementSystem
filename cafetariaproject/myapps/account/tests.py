@@ -1,11 +1,12 @@
 
 
 from django.test import TestCase
-from django.urls import reverse
+from django.urls import reverse, resolve
 from django.contrib.auth import get_user_model
 from django.contrib import messages
 
 from .forms import UserRegistration
+from .views import register_view
 
 User = get_user_model()
 
@@ -20,7 +21,7 @@ class RegisterViewTests(TestCase):
         data and if they are redirected to the login page with a success 
         message.
         """
-        
+
         response = self.client.post(self.url, {
             'username': 'testuser',
             'password1': 'securepassword123',
@@ -53,3 +54,9 @@ class RegisterViewTests(TestCase):
 
         response = self.client.get(self.url)
         #self.assertRedirects(response, reverse("cafetaria:home"))
+
+    def test_registration_url_resolves_to_register_view(self):
+        """
+        Test that the registration url resolves to register_view
+        """
+        self.assertEqual(resolve(self.url).func, register_view)

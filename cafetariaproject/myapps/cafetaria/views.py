@@ -5,6 +5,7 @@ from django.shortcuts import render
 
 @login_required
 def home_view(request):
+
     """
     Renders the home page for authenticated users.
 
