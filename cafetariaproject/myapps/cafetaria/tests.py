@@ -30,6 +30,7 @@ class HomeViewTests(TestCase):
         """
         self.client.login(username='username', password='securepassword123')
         response = self.client.get(self.home_url)
+        
         self.assertEqual(response.status_code, 200)
         self.assertTemplateUsed(response, 'cafetaria/home.html')
 
