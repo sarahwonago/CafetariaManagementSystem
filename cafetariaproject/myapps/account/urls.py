@@ -9,3 +9,12 @@ app_name = "account"
 urlpatterns = [
     path("registration/", register_view, name="register"),
 ]
+
+
+
+# from .cbviews import UserRegistrationView
+
+# urlpatterns = [
+#     path('registration/', UserRegistrationView.as_view(), name='register'),
+#     # other URL patterns
+# ]

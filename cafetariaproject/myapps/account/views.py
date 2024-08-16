@@ -6,7 +6,9 @@ from .forms import UserRegistration
 
 
 def register_view(request):
-    """View to handle user registration."""
+    """
+    View to handle user registration.
+    """
 
     # Redirects authenticated users to home page
     if request.user.is_authenticated:
