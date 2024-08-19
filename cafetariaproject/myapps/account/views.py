@@ -1,6 +1,7 @@
 from django.shortcuts import render, redirect
 from django.urls import reverse_lazy
 from django.contrib import messages
+from django.contrib.auth.views import LoginView
 
 from .forms import UserRegistration
 
@@ -31,3 +32,20 @@ def register_view(request):
     }
     
     return render(request,"registration/register.html", context)
+
+# class CustomLoginView(LoginView):
+#     """
+#     Custom Login View to handle different user roles.
+#     """
+
+#     def get_success_url(self):
+
+#         user = self.request.user
+
+#         if user.role == 'admin':
+#             return reverse_lazy('cafeadmin:home')
+#         elif user.role == 'customer':
+#             return reverse_lazy('cafetaria:home')
+        
+#         return super().get_success_url()
+

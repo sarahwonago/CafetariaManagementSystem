@@ -12,10 +12,12 @@ urlpatterns = [
 
     #authentication
     path("account/", include('django.contrib.auth.urls')),
+
     path("account/", include('myapps.account.urls')),
 
     #entrypoint
     path("", include('myapps.cafetaria.urls')),
+    path("cafeadmin/", include('cafeadmin.urls')),
 ]
 
 if settings.DEBUG:

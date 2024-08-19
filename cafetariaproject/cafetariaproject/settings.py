@@ -42,7 +42,11 @@ INSTALLED_APPS = [
     #custom-apps
     "myapps.account.apps.AccountConfig",
     "myapps.cafetaria.apps.CafetariaConfig",
+    "cafeadmin.apps.CafeadminConfig",
 ]
+
+# Uses custom user model defined in account app.
+AUTH_USER_MODEL = "account.CustomUser"
 
 MIDDLEWARE = [
     "django.middleware.security.SecurityMiddleware",
@@ -135,3 +139,4 @@ DEFAULT_AUTO_FIELD = "django.db.models.BigAutoField"
 LOGIN_URL='login'
 LOGIN_REDIRECT_URL = '/'
 LOGOUT_REDIRECT_URL = '/'
+
