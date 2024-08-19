@@ -121,8 +121,11 @@ USE_TZ = True
 # https://docs.djangoproject.com/en/5.1/howto/static-files/
 
 STATIC_URL = "static/"
-MEDIA_URL = "/media/"
-MEDIA_ROOT = BASE_DIR / "media"
+
+
+# Media files
+MEDIA_URL = "/media/" # The url to access media files
+MEDIA_ROOT = BASE_DIR / "media" # The directory where media files will be stored
 
 # Default primary key field type
 # https://docs.djangoproject.com/en/5.1/ref/settings/#default-auto-field

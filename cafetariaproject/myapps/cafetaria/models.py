@@ -129,9 +129,11 @@ class OrderItem(models.Model):
         on_delete=models.CASCADE
     )
     quantity = models.PositiveIntegerField(
+        default = 1,
         validators=[MinValueValidator(1)],
         help_text="Quantity of the item"
     )
+    
     created_at = models.DateTimeField(auto_now_add=True)
 
     def __str__(self):
