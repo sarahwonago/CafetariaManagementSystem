@@ -4,6 +4,7 @@ from django.urls import reverse_lazy
 from django.shortcuts import redirect
 from django.views.generic.edit import CreateView
 from django.contrib.auth import get_user_model
+from django.contrib.auth.views import LoginView
 from django.contrib import messages
 from .forms import UserRegistration
 
@@ -39,3 +40,20 @@ class UserRegistrationView(CreateView):
             return redirect(reverse_lazy("cafetaria:home"))
         
         return super().get(request, *args, **kwargs)
+    
+
+    class CustomLoginView(LoginView):
+        """
+        Custom Login View to handle different user roles.
+        """
+
+        def get_success_url(self):
+
+            user = self.request.user
+
+            if user.role == 'admin':
+                return reverse_lazy('cafeadmin:home')
+            elif user.role == 'customer':
+                return reverse_lazy('cafetaria:home')
+            
+            return super().get_success_url()

@@ -14,10 +14,12 @@ def is_customer(user):
 
 # Custom view to handle unauthorized access for both roles
 def handle_unauthorized_access(request):
+
     """
     Redirect logged-in users to their respective homepages if they are
     already authenticated but trying to access an unauthorized view.
     """
+    
     user = request.user
     if user.role == 'customer':
         return redirect('cafetaria:home')
