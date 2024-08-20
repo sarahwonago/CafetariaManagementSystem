@@ -1,0 +1,14 @@
+{% extends 'cafeadmin/_base.html' %}
+
+{% block title %} Add Category{% endblock title %}
+
+{% block content %}
+<section>
+    <h3>Add New Food Category</h3>
+    <form method="post">
+        {% csrf_token %}
+        {{form.as_p}}
+        <button type="submit">ADD</button>
+    </form>
+</section>
+{% endblock content %}

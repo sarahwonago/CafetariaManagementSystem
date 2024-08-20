@@ -1,0 +1,16 @@
+{% extends 'cafeadmin/_base.html' %}
+
+{% block title %} Delete Category{% endblock title %}
+
+{% block content %}
+<section>
+    <h3>Are you sure you want to delete Category: "{{category.name}}"</h3>
+    <h4>WARNING!!!</h4>
+    <p>Deleting a food category deletes all food items under it.</p>
+    <form method="post">
+        {% csrf_token %}
+        <button type="submit">DELETE</button>
+        <button><a href="{% url 'cafeadmin:categories' %}">CANCEL</a></button>
+    </form>
+</section>
+{% endblock content %}
