@@ -1,5 +1,5 @@
 from django import forms
-from myapps.cafetaria.models import Category
+from myapps.cafetaria.models import Category, FoodItem
 
 
 class CategoryForm(forms.ModelForm):
@@ -10,3 +10,19 @@ class CategoryForm(forms.ModelForm):
     class Meta:
         model = Category
         fields = '__all__'
+
+
+
+class FoodItemForm(forms.ModelForm):
+
+    """
+    FoodItemForm for adding new fooditem.
+    """
+    class Meta:
+        model = FoodItem
+        fields = [
+            "name",
+            "description",
+            "price",
+            "image",
+        ]

@@ -4,6 +4,7 @@ from django.core.validators import MinValueValidator, MaxValueValidator
 
 User = get_user_model()
 
+
 class Category(models.Model):
     """
     Defines categories for food items.
@@ -34,7 +35,7 @@ class FoodItem(models.Model):
         related_name="fooditems",
         on_delete=models.CASCADE
     )
-    name = models.CharField(max_length=250)
+    name = models.CharField(max_length=250, unique=True)
     price = models.DecimalField(max_digits=6, decimal_places=2)
     image = models.ImageField(upload_to="food_images/")
     description = models.TextField()
@@ -53,7 +54,7 @@ class DiningTable(models.Model):
     class Meta:
         verbose_name_plural = "Dining Tables"
 
-    table_number = models.PositiveIntegerField(verbose_name="Table Number")
+    table_number = models.PositiveIntegerField(verbose_name="Table Number", unique=True)
     created_at = models.DateTimeField(auto_now_add=True)
     updated_at = models.DateTimeField(auto_now=True)
 

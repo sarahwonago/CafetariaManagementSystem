@@ -26,7 +26,7 @@
         </tr>
         {% for category in categories %}
         <tr>
-            <td><a href="">{{category.name}}</a></td>
+            <td><a href="{% url 'cafeadmin:category-items' category.id %}">{{category.name}}</a></td>
             <td>{{category.description}}</td>
             <td><span><button><a href="{% url 'cafeadmin:delete-category' category.id %}">DELETE</a></button> | <button><a href="{% url 'cafeadmin:update-category' category.id %}">UPDATE</a></button></span></td>
         </tr>
