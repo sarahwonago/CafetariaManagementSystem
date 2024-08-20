@@ -1,0 +1,14 @@
+{% extends 'cafeadmin/_base.html' %}
+
+{% block title %} Update Fooditem{% endblock title %}
+
+{% block content %}
+<section>
+    <h3>Update {{fooditem.name}}</h3>
+    <form method="post">
+        {% csrf_token %}
+        {{form.as_p}}
+        <button type="submit">UPDATE</button>
+    </form>
+</section>
+{% endblock content %}
