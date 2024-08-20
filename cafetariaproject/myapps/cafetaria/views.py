@@ -4,7 +4,7 @@ from django.contrib.auth.decorators import login_required
 from django.shortcuts import render, redirect
 from django.contrib.auth.decorators import user_passes_test
 
-
+#  defines a role based  redirect function for customers
 def is_customer(user):
     if user.is_authenticated and user.role == 'customer':
         return True
@@ -29,7 +29,7 @@ def handle_unauthorized_access(request):
         return redirect('login')
     
 @login_required
-@user_passes_test(is_customer, login_url='cafetaria:handle_unauthorized_access')
+@user_passes_test(is_customer, login_url='cafetaria:handle_unauthorized_access', redirect_field_name=None)
 def home_view(request):
 
     """

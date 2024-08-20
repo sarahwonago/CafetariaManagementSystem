@@ -6,8 +6,46 @@
     <title>{% block title %}{% endblock title %}| CafeAdmin</title>
 </head>
 <body>
+    <header>
+        <h1>Cafeteria Management System</h1>
+    <nav>
+        <ul>
+            <li>
+                <form action="{% url 'logout' %}" method="post">
+                    {% csrf_token %}
+                    <a href=""><button type="submit">LOGOUT</button></a>
+                </form>
+            </li>
+            <li>
+                <a href="{% url 'cafeadmin:home' %}">Dashboard</a>
+            </li>
+            <li>
+                <a href="{% url 'cafeadmin:categories' %}">Food Categories</a>
+            </li>
+            <li>
+                <a href="">Food Items</a>
+            </li>
+            <li>
+                <a href="">Dinning Tables</a>
+            </li>
+            <li>
+                <a href=""> View Orders</a>
+            </li>
+            <li>
+                <a href=""> View Reviews</a>
+            </li>
+        </ul>
+    </nav>
+    </header>
+
+    <main>
     {% block content %}
 
     {% endblock content %}
+    </main>
+    
+    <footer>
+        <p>&copy; 2024 Cafeteria Management System</p>
+    </footer>
 </body>
 </html>
