@@ -25,4 +25,5 @@ class FoodItemForm(forms.ModelForm):
             "description",
             "price",
             "image",
+            "is_available",
         ]
