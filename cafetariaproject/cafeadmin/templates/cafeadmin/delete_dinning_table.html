@@ -1,0 +1,14 @@
+{% extends 'cafeadmin/_base.html' %}
+
+{% block title %} Delete Dinning Table{% endblock title %}
+
+{% block content %}
+<section>
+    <h3>Are you sure you want to delete Table: "{{table.table_number}}"</h3>
+    <form method="post">
+        {% csrf_token %}
+        <button type="submit">DELETE</button>
+        <button><a href="{% url 'cafeadmin:dinningtables' %}">CANCEL</a></button>
+    </form>
+</section>
+{% endblock content %}

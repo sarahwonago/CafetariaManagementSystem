@@ -1,0 +1,41 @@
+{% extends 'cafeadmin/_base.html' %}
+
+{% block title %}Dinning Tables{% endblock title %}
+
+{% block content %}
+<section>
+    <h2>Dinning Tables</h2>
+
+    <ul>
+        <li>
+            <a href="{% url 'cafeadmin:add-dinning-table' %}">Add Dinning Table</a>
+        </li>
+    </ul>
+    <form method="get">
+        <input type="search" placeholder="search category..." name="q">
+        <button type="submit">Search</button>
+    </form>
+
+    <h4>All Dinning Tables</h4>
+    
+    <table>
+        <tr>
+            <th>Table Number</th>
+            <th>Actions</th>
+        </tr>
+        {% for table in tables %}
+        <tr>
+            <td><a href="">{{table.table_number}}</a></td>
+            <td><span><button><a href="{% url 'cafeadmin:delete-dinning-table' table.id %}">DELETE</a></button> | <button><a href="{% url 'cafeadmin:update-dinning-table' table.id %}">UPDATE</a></button></span></td>
+        </tr>
+        {% empty %}
+        <tr>
+            <td></td>
+            <td></td>
+        </tr>
+        {% endfor %}
+    </table>
+    
+</section>
+
+{% endblock content %}
