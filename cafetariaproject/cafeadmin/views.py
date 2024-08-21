@@ -3,9 +3,9 @@ from django.contrib.auth.decorators import user_passes_test, login_required
 from django.db.models import Q
 from django.contrib import messages
 
-from myapps.cafetaria.models import Category, FoodItem
+from myapps.cafetaria.models import Category, FoodItem, DiningTable
 
-from .forms import CategoryForm, FoodItemForm
+from .forms import CategoryForm, FoodItemForm, DinningTableForm
 
 
 #  Define a role-based redirect function for cafeteria admins
@@ -209,3 +209,93 @@ def update_fooditem_view(request, fooditem_id, category_id):
     }
 
     return render(request,"cafeadmin/update_fooditem.html", context)
+
+
+
+@login_required
+@user_passes_test(is_cafe_admin, login_url='cafetaria:handle_unauthorized_access', redirect_field_name=None)
+def dinning_table_view(request):
+
+    """
+    Handles the dinning table page.
+    """
+    # query value from the search input
+    q = request.GET.get("q")
+
+    # filtering the categories objects based on the q value
+    tables = DiningTable.objects.filter(Q(table_number__icontains=q)) if q else DiningTable.objects.all()
+
+    context = {
+        "tables": tables,
+    }
+
+    return render(request, "cafeadmin/dinning_tables.html", context)
+
+@login_required
+@user_passes_test(is_cafe_admin, login_url='cafetaria:handle_unauthorized_access', redirect_field_name=None)
+def add_dinningtable_view(request):
+
+    """
+    Handles the adding of a new dinningtable.
+    """
+    if request.method == 'POST':
+        form = DinningTableForm(request.POST)
+        
+        if form.is_valid():
+            form.save()
+            return redirect("cafeadmin:dinningtables")
+    else:
+        form = DinningTableForm()
+
+    context = {
+        "form":form,
+    }
+    return render(request,"cafeadmin/add_dinning_table.html", context)
+
+
+@login_required
+@user_passes_test(is_cafe_admin, login_url='cafetaria:handle_unauthorized_access', redirect_field_name=None)
+def delete_dinningtable_view(request, table_id):
+
+    """
+    Handles deleting a dinningtable.
+    """
+
+    table = get_object_or_404(DiningTable, id = table_id)
+
+    if request.method == 'POST':
+        table.delete()
+        
+        return redirect("cafeadmin:dinningtables")
+
+    context = {
+        "table":table,
+    }
+    return render(request,"cafeadmin/delete_dinning_table.html", context)
+
+
+@login_required
+@user_passes_test(is_cafe_admin, login_url='cafetaria:handle_unauthorized_access', redirect_field_name=None)
+def update_dinningtable_view(request, table_id):
+
+    """
+    Handles the updating a dinningtable.
+    """
+
+    table = get_object_or_404(DiningTable, id = table_id)
+
+    if request.method == 'POST':
+        form = DinningTableForm(request.POST, instance=table)
+        
+        if form.is_valid():
+            form.save()
+            return redirect("cafeadmin:dinningtables")
+    else:
+        form = DinningTableForm(instance=table)
+
+    context = {
+        "form":form,
+        "table":table,
+    }
+
+    return render(request,"cafeadmin/update_dinning_table.html", context)
