@@ -62,6 +62,26 @@ class DiningTable(models.Model):
     def __str__(self):
         return f"Table {self.table_number}"
 
+class UserDinningTable(models.Model):
+    """
+    Defines categories for food items.
+    """
+
+    class Meta:
+        verbose_name_plural = "User Dinning Tables"
+
+
+    user = models.OneToOneField(
+        User,
+        related_name="userdinningtable",
+        on_delete=models.CASCADE,
+       
+    )
+    dinning_table = models.ForeignKey(DiningTable, on_delete=models.CASCADE, blank=True, null=True)
+
+    def __str__(self):
+        return f"{self.user.username} Dinning Table:{self.dinning_table.table_number}" if self.dinning_table else  f"{self.user.username} Dinning at:_" 
+
 
 class Order(models.Model):
     """
@@ -79,16 +99,17 @@ class Order(models.Model):
         related_name="orders",
         on_delete=models.CASCADE
     )
-    dining_table = models.ForeignKey(
-        DiningTable,
-        related_name="orders",
-        on_delete=models.CASCADE
-    )
+    # dining_table = models.ForeignKey(
+    #     DiningTable,
+    #     related_name="orders",
+    #     on_delete=models.CASCADE
+    # )
     total_price = models.DecimalField(max_digits=8, decimal_places=2, default=0.00)
     is_paid = models.BooleanField(default=False)
     estimated_time = models.IntegerField(
         choices=ESTIMATED_TIME_CHOICES,
-        help_text="Estimated time in minutes"
+        help_text="Estimated time in minutes",
+        default=5
     )
     is_completed = models.BooleanField(default=False)
     created_at = models.DateTimeField(auto_now_add=True)

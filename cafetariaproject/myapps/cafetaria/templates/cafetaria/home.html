@@ -1,5 +1,14 @@
 {% extends 'cafetaria/_base.html' %}
 {% block title %}Home{% endblock title %}
+
 {% block content %}
-<p>Welcome Home {{user}}</p>
+<section>
+    <p>Welcome Home {{user}}</p>
+    <h2>What table are you dinning at?</h2>
+    <form method="post">
+        {% csrf_token %}
+        {{form.as_p}}
+        <button type="submit">Submit</button>
+    </form>
+</section>
 {% endblock content %}

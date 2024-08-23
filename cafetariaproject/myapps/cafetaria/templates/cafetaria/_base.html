@@ -6,6 +6,7 @@
     <title>{% block title %}{% endblock title %}| Cafetaria</title>
 </head>
 <body>
+   <main>
     <nav>
         <ul>
             <li>
@@ -14,9 +15,28 @@
                     <a href=""><button type="submit">LOGOUT</button></a>
                 </form>
             </li>
+            <li>
+                <a href="{% url 'cafetaria:home' %}">Dinning Table </a>
+            </li>
+            <li>
+                <a href="{% url 'cafetaria:food' %}">Food items </a>
+            </li>
+            <li>
+                <a href="{% url 'cafetaria:order-summary' %}">Order Summary </a>
+            </li>
+            <li>
+                <a href="">Order History </a>
+            </li>
         </ul>
     </nav>
     {% block content %}
     {% endblock content %}
+
+   </main>
+
+    <footer>
+        <p>&copy; 2024 XXX.Cafeteria </p>
+    </footer>
 </body>
+
 </html>
