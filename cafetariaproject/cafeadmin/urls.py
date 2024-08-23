@@ -3,12 +3,14 @@ from django.urls import path
 from .views import (home_view, categories_view, add_category_view, delete_category_view,
                     update_category_view, category_fooditem_view, add_fooditem_view,
                     delete_fooditem_view, update_fooditem_view, dinning_table_view,
-                    add_dinningtable_view, update_dinningtable_view, delete_dinningtable_view)
+                    add_dinningtable_view, update_dinningtable_view, delete_dinningtable_view,
+                    orders_view)
 
 app_name = 'cafeadmin'
 
 urlpatterns = [
     path("", home_view, name="home"),
+    path("orders/", orders_view, name="customer-orders"),
     path("categories/", categories_view, name="categories"),
     path("add_category/", add_category_view, name="add-category"),
     path("delete_category/<int:category_id>/", delete_category_view, name="delete-category"),

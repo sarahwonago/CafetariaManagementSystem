@@ -90,6 +90,7 @@ class Order(models.Model):
 
     class Meta:
         verbose_name_plural = "Orders"
+        ordering = ['-updated_at']
 
     
     ESTIMATED_TIME_CHOICES = [(i, f"{i} minutes") for i in range(5, 65, 5)]
@@ -99,11 +100,7 @@ class Order(models.Model):
         related_name="orders",
         on_delete=models.CASCADE
     )
-    # dining_table = models.ForeignKey(
-    #     DiningTable,
-    #     related_name="orders",
-    #     on_delete=models.CASCADE
-    # )
+    
     total_price = models.DecimalField(max_digits=8, decimal_places=2, default=0.00)
     is_paid = models.BooleanField(default=False)
     estimated_time = models.IntegerField(
@@ -113,23 +110,11 @@ class Order(models.Model):
     )
     is_completed = models.BooleanField(default=False)
     created_at = models.DateTimeField(auto_now_add=True)
+    updated_at = models.DateTimeField(auto_now=True)
 
     def __str__(self):
         return f"Order {self.id} - {self.user.username}"
     
-    def calculate_total_price(self):
-        """
-        Calcualates the total price for all the order items.
-        """
-
-        total = 0
-        for item in self.orderitems.all():
-            total += item.fooditem.price * item.quantity
-        return total
-    
-    def save(self, *args, **kwargs):
-        self.total_price = self.calculate_total_price()
-        super(Order, self).save(*args, **kwargs)
 
 
 class OrderItem(models.Model):

@@ -3,7 +3,7 @@ from django.contrib.auth.decorators import user_passes_test, login_required
 from django.db.models import Q
 from django.contrib import messages
 
-from myapps.cafetaria.models import Category, FoodItem, DiningTable
+from myapps.cafetaria.models import Category, FoodItem, DiningTable, Order
 
 from .forms import CategoryForm, FoodItemForm, DinningTableForm
 
@@ -299,3 +299,18 @@ def update_dinningtable_view(request, table_id):
     }
 
     return render(request,"cafeadmin/update_dinning_table.html", context)
+
+
+@login_required
+@user_passes_test(is_cafe_admin, login_url='cafetaria:handle_unauthorized_access', redirect_field_name=None)
+def orders_view(request):
+    
+    paid_orders = Order.objects.filter(is_paid = True)
+    unpaid_orders = Order.objects.filter(is_paid = False)
+
+    context = {
+        "paid_orders": paid_orders,
+        "unpaid_orders": unpaid_orders,
+    }
+
+    return render(request,"cafeadmin/customer_orders.html", context)

@@ -6,6 +6,7 @@ from django.contrib.auth.decorators import user_passes_test
 
 from .models import Category, FoodItem, Order, OrderItem, UserDinningTable
 from .forms import UserDinningForm
+from .myutils import calculate_total_price
 
 
 #  defines a role based  redirect function for customers
@@ -80,23 +81,62 @@ def customer_view(request):
 @user_passes_test(is_customer, login_url='cafetaria:handle_unauthorized_access', redirect_field_name=None)
 def addtocart_view(request, food_id):
     user = request.user
+
     food_item = get_object_or_404(FoodItem, id=food_id)
 
     order, created = Order.objects.get_or_create(user=user, is_paid = False)
-    order.save()
+    
     order_item, created = OrderItem.objects.get_or_create(order=order, fooditem=food_item)
-    order_item.save()
 
-    return redirect("/")
+    total_price = calculate_total_price(order)
+    order.total_price = total_price
+    order.save()
+
+
+    return redirect("cafetaria:food")
 
 @login_required
 @user_passes_test(is_customer, login_url='cafetaria:handle_unauthorized_access', redirect_field_name=None)
 def order_summary_view(request):
 
     user = request.user
-    order = get_object_or_404(Order, user=user, is_paid=False)
+    
+    try:
+        order = Order.objects.get(user=user, is_paid=False)
+    except Order.DoesNotExist:
+        order = None
+
+    if order is None:
+        return redirect("cafetaria:food")
+    
+    
+    context = {
+        'order': order,
+        }
+    
+    return render(request, "cafetaria/customerorder.html", context)
+
+
+@login_required
+@user_passes_test(is_customer, login_url='cafetaria:handle_unauthorized_access', redirect_field_name=None)
+def checkout_view(request):
+    order = get_object_or_404(Order, user=request.user, is_paid=False)
+
+    # processs payment here
+
+    order.is_paid = True 
+    order.save()
+
+    return redirect("cafetaria:order-complete", order.id)
+
+@login_required
+@user_passes_test(is_customer, login_url='cafetaria:handle_unauthorized_access', redirect_field_name=None)
+def order_complete_view(request, order_id):
+
+    order = get_object_or_404(Order, id=order_id)
 
     context = {
-        'order': order
-        }
-    return render(request, 'cafeteria/order_summary.html', context)
+        "order": order
+    }
+
+    return render(request, 'cafetaria/order_complete.html', context)

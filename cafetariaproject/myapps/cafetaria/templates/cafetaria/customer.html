@@ -3,12 +3,21 @@
 
 {% block content %}
 <section>
+    <p>Current dinning-table: Table {{user.userdinningtable.dinning_table.table_number}}</p>
     <h2>Available Food </h2>
     {% for category in categories %}
         <h3>{{category.name}}</h3>
         {%  for food in category.fooditems.all%}
             <ul>
-                <li>{{food.name}} <a href="{% url 'cafetaria:addtocart' food.id %}">Add To Cart</a></li>
+                <li>
+                    <div>
+                        <h4>{{food.name}} | Ksh.{{food.price}}</h4>
+                        <p><span><a href="{% url 'cafetaria:addtocart' food.id %}">Add To Cart</a></span></p>
+                        
+                        <img src="{{food.image.url}}" alt="">
+                        
+                    </div>
+                </li>
             </ul>
         {% empty %}
         <p>No food item in category</p>
