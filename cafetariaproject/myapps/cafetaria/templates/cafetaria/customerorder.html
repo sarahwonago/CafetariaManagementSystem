@@ -1,0 +1,21 @@
+{% extends 'cafetaria/_base.html' %}
+{% block title %}Order Summary{% endblock title %}
+
+{% block content %}
+<section>
+    <h3>Order Summary:</h3>
+    <h3>
+        {{order}}
+    </h3>
+    <h4>Order Items:</h4>
+    
+    <ul>
+        {% for item in order.orderitems.all%}
+        <li>{{item.fooditem.name}} {{item.fooditem.price}} | Quantity:{{item.quantity}}</li>
+        {% endfor %}
+    </ul>
+    <h4>Total Price: Ksh.{{order.total_price}}</h4>
+    <button type="button"><a href="{% url 'cafetaria:checkout' %}">CheckOut</a></button>
+    
+</section>
+{% endblock content %}

@@ -1,0 +1,11 @@
+{% extends 'cafetaria/_base.html' %}
+{% block title %}Home{% endblock title %}
+
+{% block content %}
+<section>
+    <p>Current dinning-table: Table {{user.userdinningtable.dinning_table.table_number}}</p>
+    <h2>Order Successfully placed. </h2>
+    <p>Food will be delivered in {{order.estimated_time}} minutes</p>
+   
+</section>
+{% endblock content %}

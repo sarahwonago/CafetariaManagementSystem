@@ -1,0 +1,75 @@
+{% extends 'cafeadmin/_base.html' %}
+
+{% block title %}Orders{% endblock title %}
+
+{% block content %}
+<section>
+    <h2>Paid Orders</h2>
+    
+    <table>
+        <tr>
+            <th>CustomerName</th>
+            <th>Total Price</th>
+            <th>Paid</th>
+            <th>Estimated Time</th>
+            <th>Complete</th>
+            <th>Actions</th>
+        </tr>
+        {% for order in paid_orders %}
+        <tr>
+            <td>{{order.user.username}}</td>
+            <td>{{order.total_price}}</td>
+            <td>{{order.is_paid}}</td>
+            <td>{{order.estimated_time}}</td>
+            <td>{{order.is_completed}}</td>
+            <td><span><button><a href="">CONFIRM ORDER</a></button></span></td>
+        </tr>
+        {% empty %}
+        <tr>
+            <td></td>
+            <td></td>
+            <td></td>
+            <td></td>
+            <td></td>
+            <td></td>
+        </tr>
+        {% endfor %}
+    </table>
+    
+</section>
+
+<section>
+    <h2>UnPaid Orders</h2>
+    
+    <table>
+        <tr>
+            <th>CustomerName</th>
+            <th>Total Price</th>
+            <th>Paid</th>
+            <th>Estimated Time</th>
+            <th>Complete</th>
+            
+        </tr>
+        {% for order in unpaid_orders %}
+        <tr>
+            <td>{{order.user.username}}</td>
+            <td>{{order.total_price}}</td>
+            <td>{{order.is_paid}}</td>
+            <td>{{order.estimated_time}}</td>
+            <td>{{order.is_completed}}</td>
+        </tr>
+        {% empty %}
+        <tr>
+            <td></td>
+            <td></td>
+            <td></td>
+            <td></td>
+            <td></td>
+            
+        </tr>
+        {% endfor %}
+    </table>
+    
+</section>
+
+{% endblock content %}
