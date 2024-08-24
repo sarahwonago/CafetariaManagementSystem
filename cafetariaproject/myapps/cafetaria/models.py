@@ -94,6 +94,10 @@ class Order(models.Model):
 
     
     ESTIMATED_TIME_CHOICES = [(i, f"{i} minutes") for i in range(5, 65, 5)]
+    STATUS_CHOICES = (
+        ("COMPLETE", "Complete"),
+        ("PENDING", "Pending")
+    )
 
     user = models.ForeignKey(
         User,
@@ -108,7 +112,7 @@ class Order(models.Model):
         help_text="Estimated time in minutes",
         default=5
     )
-    is_completed = models.BooleanField(default=False)
+    status = models.CharField(max_length=250, default="PENDING")
     created_at = models.DateTimeField(auto_now_add=True)
     updated_at = models.DateTimeField(auto_now=True)
 
@@ -141,6 +145,7 @@ class OrderItem(models.Model):
         validators=[MinValueValidator(1)],
         help_text="Quantity of the item"
     )
+    total_price = models.DecimalField(max_digits=8, decimal_places=2, default=0.00)
     
     created_at = models.DateTimeField(auto_now_add=True)
 

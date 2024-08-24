@@ -1,12 +1,12 @@
 
 
 from django.contrib.auth.decorators import login_required
-from django.shortcuts import render, redirect, get_object_or_404
+from django.shortcuts import render, redirect, get_object_or_404, get_list_or_404
 from django.contrib.auth.decorators import user_passes_test
 
 from .models import Category, FoodItem, Order, OrderItem, UserDinningTable
 from .forms import UserDinningForm
-from .myutils import calculate_total_price, increase_orderitem_quantity, decrease_orderitem_quantity
+from .myutils import calculate_total_price,calculate_total_item_price, increase_orderitem_quantity, decrease_orderitem_quantity
 
 
 #  defines a role based  redirect function for customers
@@ -92,12 +92,16 @@ def addtocart_view(request, food_id):
     order.total_price = total_price
     order.save()
 
+    orderitem_total_price = calculate_total_item_price(order_item)
+    order_item.total_price = orderitem_total_price
+    order_item.save()
+
 
     return redirect("cafetaria:food")
 
 @login_required
 @user_passes_test(is_customer, login_url='cafetaria:handle_unauthorized_access', redirect_field_name=None)
-def order_summary_view(request):
+def cart_view(request):
 
     user = request.user
     
@@ -107,17 +111,23 @@ def order_summary_view(request):
         order = None
 
     if order is None:
-        return redirect("cafetaria:food")
+        pass
     
-    total_price = calculate_total_price(order)
-    order.total_price = total_price
-    order.save()
+    else:
+        total_price = calculate_total_price(order)
+        order.total_price = total_price
+        order.save()
+
+        for order_item in order.orderitems.all():
+            orderitem_total_price = calculate_total_item_price(order_item)
+            order_item.total_price = orderitem_total_price
+            order_item.save()
     
     context = {
         'order': order,
         }
     
-    return render(request, "cafetaria/customerorder.html", context)
+    return render(request, "cafetaria/cart.html", context)
 
 
 @login_required
@@ -152,7 +162,7 @@ def increase_orderitem_view(request, item_id):
     orderitem = get_object_or_404(OrderItem, id=item_id)
     orderitem = increase_orderitem_quantity(orderitem)
 
-    return redirect("cafetaria:order-summary")
+    return redirect("cafetaria:cart")
 
 
 @login_required
@@ -162,7 +172,7 @@ def decrease_orderitem_view(request, item_id):
     orderitem = get_object_or_404(OrderItem, id=item_id)
     orderitem = decrease_orderitem_quantity(orderitem)
 
-    return redirect("cafetaria:order-summary")
+    return redirect("cafetaria:cart")
 
 
 @login_required
@@ -170,8 +180,38 @@ def decrease_orderitem_view(request, item_id):
 def remove_item_view(request, item_id):
 
     orderitem = get_object_or_404(OrderItem, id=item_id)
+    order = orderitem.order
     orderitem.delete()
+
+    if order.orderitems.count() == 0:
+        order.delete()
     
-    return redirect("cafetaria:order-summary")
+    return redirect("cafetaria:cart")
 
 
+@login_required
+@user_passes_test(is_customer, login_url='cafetaria:handle_unauthorized_access', redirect_field_name=None)
+def order_history_view(request):
+    user = request.user
+
+    try:
+        orders = get_list_or_404(Order, user=user, is_paid=True)
+    except:
+        orders = None
+
+    context = {
+        "orders":orders,
+    }
+
+    return render(request, 'cafetaria/order_history.html', context)
+
+@login_required
+@user_passes_test(is_customer, login_url='cafetaria:handle_unauthorized_access', redirect_field_name=None)
+def order_receipt_view(request, order_id):
+    order = get_object_or_404(Order, id = order_id)
+
+    context = {
+        "order":order,
+    }
+
+    return render(request, 'cafetaria/order_reciept.html', context)

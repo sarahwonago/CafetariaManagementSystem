@@ -3,9 +3,14 @@
 
 {% block content %}
 <section>
-    <p>Current dinning-table: Table {{user.userdinningtable.dinning_table.table_number}}</p>
-    <h2>Order Successfully placed. </h2>
+    <h2>Order Confirmation</h2>
+
+    <p>Thank you for your order! Your order number is:  {{ order }}.</p>
     <p>Food will be delivered in {{order.estimated_time}} minutes</p>
-   
+    <h5>@Current dinning-table: Table {{user.userdinningtable.dinning_table.table_number}}</h5>
+
+    <a href="{% url 'cafetaria:food' %}">Return to Home</a>
+    <a href="{% url 'cafetaria:order-reciept' order.id %}">View Reciept</a>
+    
 </section>
 {% endblock content %}

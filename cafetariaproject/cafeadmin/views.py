@@ -307,10 +307,18 @@ def orders_view(request):
     
     paid_orders = Order.objects.filter(is_paid = True)
     unpaid_orders = Order.objects.filter(is_paid = False)
+    complete_paid_orders = Order.objects.filter(is_paid = True, status = "Complete")
 
     context = {
         "paid_orders": paid_orders,
         "unpaid_orders": unpaid_orders,
+        "complete_paid_orders": complete_paid_orders,
     }
 
     return render(request,"cafeadmin/customer_orders.html", context)
+
+
+@login_required
+@user_passes_test(is_cafe_admin, login_url='cafetaria:handle_unauthorized_access', redirect_field_name=None)
+def confirm_orders_view(request):
+    pass
