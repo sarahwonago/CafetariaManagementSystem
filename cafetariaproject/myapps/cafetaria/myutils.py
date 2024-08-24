@@ -10,9 +10,22 @@ def calculate_total_price(order:Order):
             total += item.fooditem.price * item.quantity
         return total
 
-def update_orderitem_quantity(orderitem:OrderItem):
+def increase_orderitem_quantity(orderitem:OrderItem):
       """
-        Updates order item quantity.
+        Increase order item quantity by 1.
       """
+      orderitem.quantity += 1
+      orderitem.save()
+      return orderitem
+
+def decrease_orderitem_quantity(orderitem:OrderItem):
+      """
+        Decreases order item quantity by 1.
+      """
+      if orderitem.quantity == 1:
+            return orderitem
       
+      orderitem.quantity -= 1
+      orderitem.save()
+
       return orderitem

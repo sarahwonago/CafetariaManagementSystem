@@ -6,7 +6,7 @@ from django.contrib.auth.decorators import user_passes_test
 
 from .models import Category, FoodItem, Order, OrderItem, UserDinningTable
 from .forms import UserDinningForm
-from .myutils import calculate_total_price
+from .myutils import calculate_total_price, increase_orderitem_quantity, decrease_orderitem_quantity
 
 
 #  defines a role based  redirect function for customers
@@ -109,6 +109,9 @@ def order_summary_view(request):
     if order is None:
         return redirect("cafetaria:food")
     
+    total_price = calculate_total_price(order)
+    order.total_price = total_price
+    order.save()
     
     context = {
         'order': order,
@@ -140,3 +143,35 @@ def order_complete_view(request, order_id):
     }
 
     return render(request, 'cafetaria/order_complete.html', context)
+
+
+@login_required
+@user_passes_test(is_customer, login_url='cafetaria:handle_unauthorized_access', redirect_field_name=None)
+def increase_orderitem_view(request, item_id):
+
+    orderitem = get_object_or_404(OrderItem, id=item_id)
+    orderitem = increase_orderitem_quantity(orderitem)
+
+    return redirect("cafetaria:order-summary")
+
+
+@login_required
+@user_passes_test(is_customer, login_url='cafetaria:handle_unauthorized_access', redirect_field_name=None)
+def decrease_orderitem_view(request, item_id):
+
+    orderitem = get_object_or_404(OrderItem, id=item_id)
+    orderitem = decrease_orderitem_quantity(orderitem)
+
+    return redirect("cafetaria:order-summary")
+
+
+@login_required
+@user_passes_test(is_customer, login_url='cafetaria:handle_unauthorized_access', redirect_field_name=None)
+def remove_item_view(request, item_id):
+
+    orderitem = get_object_or_404(OrderItem, id=item_id)
+    orderitem.delete()
+    
+    return redirect("cafetaria:order-summary")
+
+
