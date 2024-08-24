@@ -1,0 +1,28 @@
+{% extends 'cafetaria/_base.html' %}
+{% block title %}Order History{% endblock title %}
+
+{% block content %}
+<section>
+    <h2>Past Orders:</h2>
+
+    {% if orders %}
+    <ul>
+        {% for order in orders %}
+            <li>
+                <strong>Order #{{ order}} - KSh {{ order.total_price }}</strong>
+                <ul>
+                    {% for item in order.orderitems.all %}
+                        <li>{{ item.quantity }} x {{ item.fooditem.name }} - @KSh {{ item.fooditem.price }} each</li>
+                    {% endfor %}
+                </ul>
+                <p>Paid: {{ order.is_paid }}</p>
+                <a href="">Download Receipt</a>
+            </li>
+        {% endfor %}
+    </ul>
+    {% else %}
+    <p>You have no past orders.</p>
+    {% endif %}
+
+</section>
+{% endblock content %}

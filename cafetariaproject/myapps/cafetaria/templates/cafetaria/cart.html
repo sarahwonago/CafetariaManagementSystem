@@ -1,0 +1,43 @@
+{% extends 'cafetaria/_base.html' %}
+{% block title %}Order Summary{% endblock title %}
+
+{% block content %}
+<section>
+    <h3>Your Cart:</h3>
+    {% if order %}
+    <h3>
+        {{order}}
+    </h3>
+    <table>
+        <thead>
+            <tr>
+                <th>Item</th>
+                <th>Price</th>
+                <th>Quantity</th>
+                <th>Total</th>
+                <th>Action</th>
+            </tr>
+        </thead>
+        <tbody>
+            {% for item in order.orderitems.all %}
+            <tr>
+                <td>{{ item.fooditem.name }}</td>
+                <td>@{{ item.fooditem.price }}</td>
+                <td>
+                    <button><a href="{% url 'cafetaria:increase-quantity' item.id %}">+</a></button> {{item.quantity}}<button><a href="{% url 'cafetaria:decrease-quantity' item.id %}">-</a></button>
+                </td>
+                <td>{{item.total_price}}</td>
+                <td><button><a href="{% url 'cafetaria:remove-item' item.id %}">REMOVE</a></button></td>
+            </tr>
+            {% endfor %}
+        </tbody>
+    </table>
+  
+    <h4>Total Price: Ksh.{{order.total_price}}</h4>
+    <button type="button"><a href="{% url 'cafetaria:checkout' %}">CheckOut</a></button>
+    {% else %}
+    <p>You have no items in Cart.</p>
+    {% endif %}
+</section>
+
+{% endblock content %}

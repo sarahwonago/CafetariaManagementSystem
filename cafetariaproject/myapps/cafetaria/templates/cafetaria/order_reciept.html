@@ -1,0 +1,50 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <meta charset="utf-8">
+    <title>Receipt for Order #{{order}}</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+        }
+        h2 {
+            color: #333;
+        }
+        .order-details {
+            margin-top: 20px;
+        }
+        .order-details ul {
+            list-style-type: none;
+            padding: 0;
+        }
+        .order-details ul li {
+            margin-bottom: 10px;
+        }
+        .order-total {
+            font-weight: bold;
+            margin-top: 20px;
+        }
+    </style>
+</head>
+<body>
+    <h2>Thank you for your order!</h2>
+    <p>Dear {{ order.user.username }},</p>
+    <p>We are pleased to inform you that your payment for order #{{ order.id }} has been confirmed.</p>
+
+    <h3 class="order-details" >Order Summary</h3>
+    <p>Date: {{ order.created_at|date:"F j, Y, g:i a" }}</p>
+    <ul>
+        {% for item in order.orderitems.all %}
+            <li>{{ item.quantity }} x {{ item.fooditem.name }} - @KSh {{ item.fooditem.price }}</li>
+        {% endfor %}
+    </ul>
+
+    <div class="order-total">
+        <p>Total: KSh {{ order.total_price }}</p>
+        
+    </div>
+    
+    <p>Thank you for dining with us!</p>
+    <p>Best regards,<br>The Cafeteria Team</p>
+</body>
+</html>
