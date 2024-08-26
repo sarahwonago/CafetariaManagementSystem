@@ -29,6 +29,7 @@ class FoodItem(models.Model):
 
     class Meta:
         verbose_name_plural = "FoodItems"
+        
 
     category = models.ForeignKey(
         Category,
@@ -37,7 +38,7 @@ class FoodItem(models.Model):
     )
     name = models.CharField(max_length=250, unique=True)
     price = models.DecimalField(max_digits=6, decimal_places=2)
-    image = models.ImageField(upload_to="food_images/")
+    image = models.ImageField(upload_to="food_images/", default="food_images/default.jpg")
     description = models.TextField()
     created_at = models.DateTimeField(auto_now_add=True)
     updated_at = models.DateTimeField(auto_now=True)
@@ -151,7 +152,6 @@ class OrderItem(models.Model):
 
     def __str__(self):
         return f"{self.quantity} x {self.fooditem.name} (Order {self.order.id})"
-
 
 
 class Review(models.Model):

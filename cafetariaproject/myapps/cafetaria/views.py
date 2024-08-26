@@ -67,7 +67,7 @@ def home_view(request):
 
 @login_required
 @user_passes_test(is_customer, login_url='cafetaria:handle_unauthorized_access', redirect_field_name=None)
-def customer_view(request):
+def food_items_view(request):
 
     categories = Category.objects.all()
 
@@ -75,7 +75,7 @@ def customer_view(request):
         "categories":categories,
         
     }
-    return render(request, "cafetaria/customer.html", context)
+    return render(request, "cafetaria/food_items.html", context)
 
 @login_required
 @user_passes_test(is_customer, login_url='cafetaria:handle_unauthorized_access', redirect_field_name=None)
