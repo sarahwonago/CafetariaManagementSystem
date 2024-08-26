@@ -1,0 +1,32 @@
+{% extends 'cafetaria/_base.html' %}
+{% block title %}Home{% endblock title %}
+
+{% block content %}
+<section>
+    <p>Current dining table: Table {{user.userdinningtable.dinning_table.table_number}}</p>
+    <h2>Available Food </h2>
+    {% for category in categories %}
+        <h3>{{category.name}}</h3>
+        {% for food in category.fooditems.all %}
+            {% if food.is_available %}
+            <ul>
+                <li id="food-item-{{food.id}}">
+                    <div>
+                        <h4>{{food.name}} | Ksh.{{food.price}}</h4>
+                        <p>{{food.description}}</p>
+                        <p><span><a href="{% url 'cafetaria:addtocart' food.id %}#food-item-{{food.id}}">Add To Cart</a></span></p>
+                        
+                        <img src="{{food.image.url}}" alt="" height="100" width="200">
+                        
+                    </div>
+                </li>
+            </ul>
+            {% endif %}
+        {% empty %}
+        <p>No food item in category</p>
+        {% endfor %}
+    {% empty %}
+    <p>No food Items Available Today. Sorry!</p>
+    {% endfor %}
+</section>
+{% endblock content %}
