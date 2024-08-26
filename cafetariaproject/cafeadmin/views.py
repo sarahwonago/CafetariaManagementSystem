@@ -5,7 +5,7 @@ from django.contrib import messages
 
 from myapps.cafetaria.models import Category, FoodItem, DiningTable, Order
 
-from .forms import CategoryForm, FoodItemForm, DinningTableForm
+from .forms import CategoryForm, FoodItemForm, DinningTableForm, UpdateOrderForm
 
 
 #  Define a role-based redirect function for cafeteria admins
@@ -305,9 +305,9 @@ def update_dinningtable_view(request, table_id):
 @user_passes_test(is_cafe_admin, login_url='cafetaria:handle_unauthorized_access', redirect_field_name=None)
 def orders_view(request):
     
-    paid_orders = Order.objects.filter(is_paid = True)
-    unpaid_orders = Order.objects.filter(is_paid = False)
-    complete_paid_orders = Order.objects.filter(is_paid = True, status = "Complete")
+    paid_orders = Order.objects.filter(is_paid = True, status = "PENDING")
+    unpaid_orders = Order.objects.filter(is_paid = False, status = "PENDING")
+    complete_paid_orders = Order.objects.filter(is_paid = True, status = "COMPLETE")
 
     context = {
         "paid_orders": paid_orders,
@@ -320,5 +320,21 @@ def orders_view(request):
 
 @login_required
 @user_passes_test(is_cafe_admin, login_url='cafetaria:handle_unauthorized_access', redirect_field_name=None)
-def confirm_orders_view(request):
-    pass
+def confirm_orders_view(request, order_id):
+
+    order = get_object_or_404(Order, id=order_id)
+    
+    if request.method == 'POST':
+        form = UpdateOrderForm(request.POST, instance=order)
+        
+        if form.is_valid():
+            form.save()
+            return redirect("cafeadmin:customer-orders")
+    else:
+        form= UpdateOrderForm(instance=order)
+
+    context = {
+        "form":form,
+        "order": order,
+    }
+    return render(request,"cafeadmin/confirm_orders.html", context)

@@ -4,6 +4,10 @@
 {% block content %}
 <section>
     <p>Current dining table: Table {{user.userdinningtable.dinning_table.table_number}}</p>
+    <form method="get">
+        <input type="search" placeholder="search food..." name="q">
+        <button type="submit">Search</button>
+    </form>
     <h2>Available Food </h2>
     {% for category in categories %}
         <h3>{{category.name}}</h3>

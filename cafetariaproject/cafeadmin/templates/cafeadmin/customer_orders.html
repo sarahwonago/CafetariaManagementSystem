@@ -9,7 +9,6 @@
     <table>
         <tr>
             <th>OrderId</th>
-            <th>Customer</th>
             <th>Total Price</th>
             <th>Is Paid</th>
             <th>Estimated Time</th>
@@ -18,17 +17,15 @@
         </tr>
         {% for order in paid_orders %}
         <tr>
-            <td>{{order.id}}</td>
-            <td>{{order.user.username}}</td>
+            <td>#{{order}}</td>
             <td>{{order.total_price}}</td>
             <td>{{order.is_paid}}</td>
             <td>{{order.estimated_time}}</td>
             <td>{{order.status}}</td>
-            <td><span><button><a href="">CONFIRM ORDER</a></button></span></td>
+            <td><span><button><a href="{% url 'cafeadmin:confirm-order' order.id %}">UPDATE ORDER</a></button></span></td>
         </tr>
         {% empty %}
         <tr>
-            <td></td>
             <td></td>
             <td></td>
             <td></td>
@@ -47,26 +44,21 @@
     <table>
         <tr>
             <th>OrderId</th>
-            <th>Customer</th>
             <th>Total Price</th>
             <th>Is Paid</th>
             <th>Estimated Time</th>
             <th>Status</th>
-            <th>Action</th>
         </tr>
         {% for order in complete_paid_orders %}
         <tr>
-            <td>{{order.id}}</td>
-            <td>{{order.user.username}}</td>
+            <td>#{{order}}</td>
             <td>{{order.total_price}}</td>
             <td>{{order.is_paid}}</td>
             <td>{{order.estimated_time}}</td>
             <td>{{order.status}}</td>
-            <td><span><button><a href="">CONFIRM ORDER</a></button></span></td>
         </tr>
         {% empty %}
         <tr>
-            <td></td>
             <td></td>
             <td></td>
             <td></td>
@@ -85,7 +77,6 @@
     <table>
         <tr>
             <th>OrderId</th>
-            <th>Customer</th>
             <th>Total Price</th>
             <th>Is Paid</th>
             <th>Estimated Time</th>
@@ -95,7 +86,7 @@
         </tr>
         {% for order in unpaid_orders %}
         <tr>
-            <td>{{order.id}}</td>
+            <td>#{{order}}</td>
             <td>{{order.user.username}}</td>
             <td>{{order.total_price}}</td>
             <td>{{order.is_paid}}</td>
@@ -104,6 +95,7 @@
         </tr>
         {% empty %}
         <tr>
+            <td></td>
             <td></td>
             <td></td>
             <td></td>

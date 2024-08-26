@@ -3,10 +3,39 @@
 
 {% block content %}
 <section>
+    <h2>Pending Order</h2>
+    <table>
+        <tr>
+            <th>OrderId</th>
+            <th>Customer</th>
+            <th>Total Price</th>
+            <th>Is Paid</th>
+            <th>Estimated Delivery Time</th>
+            <th>Status</th>
+        </tr>
+        {% if p_order %}
+        <tr>
+            <td>{{p_order.id}}</td>
+            <td>{{p_order.user.username}}</td>
+            <td>{{p_order.total_price}}</td>
+            <td>{{p_order.is_paid}}</td>
+            <td>{{p_order.estimated_time}}</td>
+            <td>{{p_order.status}}</td>
+        </tr>
+        {% else %}
+        <tr>
+            <td colspan="6">No Pending Order.</td>
+         
+        </tr>
+        {% endif %}
+    </table>
+    
+</section>
+<section>
     <h2>Past Orders:</h2>
-    {% if orders %}
+    {% if past_orders %}
     <ul>
-        {% for order in orders %}
+        {% for order in past_orders %}
             <li>
                 <h4>Date: {{ order.created_at }}</h4>
                 <strong>Order #{{ order}} - KSh {{ order.total_price }}</strong>
@@ -16,7 +45,8 @@
                     {% endfor %}
                 </ul>
                 <p>Paid: {{ order.is_paid }}</p>
-                <a href="">Download Receipt</a>
+                <a href="{% url 'cafetaria:order-reciept' order.id %}">View Reciept</a> |
+                <a href="">Review Dish</a>
             </li>
         {% endfor %}
     </ul>

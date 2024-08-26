@@ -70,6 +70,7 @@ def home_view(request):
 def food_items_view(request):
 
     categories = Category.objects.all()
+    
 
     context = {
         "categories":categories,
@@ -133,12 +134,16 @@ def cart_view(request):
 @login_required
 @user_passes_test(is_customer, login_url='cafetaria:handle_unauthorized_access', redirect_field_name=None)
 def checkout_view(request):
-    order = get_object_or_404(Order, user=request.user, is_paid=False)
+    user=request.user
+    order = get_object_or_404(Order, user=user, is_paid=False)
 
     # processs payment here
 
     order.is_paid = True 
     order.save()
+    user_dinning = UserDinningTable.objects.get(user = user)
+    table = user_dinning.dinning_table.table_number
+
 
     return redirect("cafetaria:order-complete", order.id)
 
@@ -195,12 +200,19 @@ def order_history_view(request):
     user = request.user
 
     try:
-        orders = get_list_or_404(Order, user=user, is_paid=True)
+        past_orders = get_list_or_404(Order, user=user, is_paid=True, status="COMPLETE")
     except:
-        orders = None
+        past_orders = None
+
+
+    try:
+        p_order = get_object_or_404(Order, user=user, is_paid=True, status="PENDING")
+    except:
+        p_order = None
 
     context = {
-        "orders":orders,
+        "past_orders":past_orders,
+        "p_order": p_order,
     }
 
     return render(request, 'cafetaria/order_history.html', context)

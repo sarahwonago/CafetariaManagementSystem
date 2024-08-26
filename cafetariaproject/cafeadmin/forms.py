@@ -1,5 +1,5 @@
 from django import forms
-from myapps.cafetaria.models import Category, FoodItem, DiningTable
+from myapps.cafetaria.models import Category, FoodItem, DiningTable, Order
 
 
 class CategoryForm(forms.ModelForm):
@@ -38,4 +38,16 @@ class DinningTableForm(forms.ModelForm):
         model = DiningTable
         fields = [
             "table_number",
+        ]
+
+class UpdateOrderForm(forms.ModelForm):
+    """
+    OrderForm for updating an order.
+    """
+
+    class Meta:
+        model = Order
+        fields = [
+            "estimated_time",
+            "status",
         ]

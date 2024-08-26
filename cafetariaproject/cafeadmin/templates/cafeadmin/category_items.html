@@ -29,7 +29,7 @@
         {% for fooditem in fooditems %}
         <tr>
             <td style="font-weight: bold;">{{fooditem.name}}</td>
-            <td>{{fooditem.description}}</td>
+            <td>{{fooditem.description|truncatewords:5}}</td>
             <td>ksh.{{fooditem.price}}</td>
             <td><span><button><a href="{% url 'cafeadmin:delete-fooditem' fooditem.id category.id %}">DELETE</a></button> | <button><a href="{% url 'cafeadmin:update-fooditem' fooditem.id category.id %}">UPDATE</a></button></span></td>
         </tr>

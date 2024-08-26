@@ -109,11 +109,11 @@ class Order(models.Model):
     total_price = models.DecimalField(max_digits=8, decimal_places=2, default=0.00)
     is_paid = models.BooleanField(default=False)
     estimated_time = models.IntegerField(
+        "Estimated Delivery Time",
         choices=ESTIMATED_TIME_CHOICES,
-        help_text="Estimated time in minutes",
         default=5
     )
-    status = models.CharField(max_length=250, default="PENDING")
+    status = models.CharField(max_length=250, default="PENDING", choices=STATUS_CHOICES)
     created_at = models.DateTimeField(auto_now_add=True)
     updated_at = models.DateTimeField(auto_now=True)
 
@@ -146,6 +146,7 @@ class OrderItem(models.Model):
         validators=[MinValueValidator(1)],
         help_text="Quantity of the item"
     )
+
     total_price = models.DecimalField(max_digits=8, decimal_places=2, default=0.00)
     
     created_at = models.DateTimeField(auto_now_add=True)
