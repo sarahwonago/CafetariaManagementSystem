@@ -1,11 +1,12 @@
 
-
+from django.utils import timezone
+from django.contrib import messages
 from django.contrib.auth.decorators import login_required
 from django.shortcuts import render, redirect, get_object_or_404, get_list_or_404, HttpResponse
 from django.contrib.auth.decorators import user_passes_test
 
-from .models import Category, FoodItem, Order, OrderItem, UserDinningTable
-from .forms import UserDinningForm
+from .models import Category, FoodItem, Order, OrderItem, UserDinningTable, Review
+from .forms import UserDinningForm, ReviewForm
 from .myutils import calculate_total_price,calculate_total_item_price, increase_orderitem_quantity, decrease_orderitem_quantity
 
 
@@ -237,3 +238,44 @@ def order_receipt_view(request, order_id):
     }
 
     return render(request, 'cafetaria/order_reciept.html', context)
+
+
+@login_required
+@user_passes_test(is_customer, login_url='cafetaria:handle_unauthorized_access', redirect_field_name=None)
+def review_dish_view(request, order_id):
+    user = request.user
+    order = get_object_or_404(Order, id=order_id)
+
+    if user != order.user:
+        return HttpResponse("Sorry, you are not allowed to access this content.")
+    
+
+    # Ensure that the order was placed today
+    if order.created_at.date() != timezone.now().date():
+        messages.error(request, "You can only review meals on the same day you ordered them.")
+        return redirect('cafetaria:order-history')
+    
+    # Check if a review already exists for this food item and order
+    if Review.objects.filter(user=request.user, order=order).exists():
+        messages.error(request, "You have already reviewed this item.")
+        return redirect('cafetaria:order-history')
+
+    if request.method == 'POST':
+        form = ReviewForm(request.POST)
+        
+        if form.is_valid():
+            review = form.save(commit=False)
+            review.user = user
+            review.order = order
+            review.save()
+            return redirect("cafetaria:order-history")
+    
+    else:
+        form = ReviewForm()
+    
+    context = {
+        "form":form,
+        "order":order,
+    }
+
+    return render(request, 'cafetaria/review_order.html', context)

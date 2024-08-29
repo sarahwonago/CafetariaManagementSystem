@@ -168,7 +168,7 @@ class Review(models.Model):
         related_name="reviews",
         on_delete=models.CASCADE
     )
-    order = models.ForeignKey(Order, on_delete=models.CASCADE)
+    order = models.ForeignKey(Order, on_delete=models.CASCADE, related_name="review")
     rating = models.PositiveIntegerField(
         validators=[MinValueValidator(1), MaxValueValidator(5)]
     )

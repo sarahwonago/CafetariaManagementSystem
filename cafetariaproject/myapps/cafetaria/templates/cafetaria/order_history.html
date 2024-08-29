@@ -34,6 +34,11 @@
     
 </section>
 <section>
+    {% if messages%}
+        {% for message in messages%}
+        <p>{{message}}</p>
+        {% endfor%}
+    {% endif %}
     <h2>Past Orders:</h2>
     {% if past_orders %}
     <ul>
@@ -47,8 +52,8 @@
                     {% endfor %}
                 </ul>
                 <p>Paid: {{ order.is_paid }}</p>
-                <a href="{% url 'cafetaria:order-reciept' order.id %}">View Reciept</a> |
-                <a href="">Review Dish</a>
+                <a href="{% url 'cafetaria:order-reciept' order.id %}">View Reciept</a> | 
+                <a href="{% url 'cafetaria:review-order' order.id %}">Review Dish</a>
             </li>
         {% endfor %}
     </ul>

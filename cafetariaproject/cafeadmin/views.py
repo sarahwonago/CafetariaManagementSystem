@@ -3,7 +3,7 @@ from django.contrib.auth.decorators import user_passes_test, login_required
 from django.db.models import Q
 from django.contrib import messages
 
-from myapps.cafetaria.models import Category, FoodItem, DiningTable, Order
+from myapps.cafetaria.models import Category, FoodItem, DiningTable, Order, Review
 
 from .forms import CategoryForm, FoodItemForm, DinningTableForm, UpdateOrderForm
 
@@ -338,3 +338,15 @@ def confirm_orders_view(request, order_id):
         "order": order,
     }
     return render(request,"cafeadmin/confirm_orders.html", context)
+
+
+@login_required
+@user_passes_test(is_cafe_admin, login_url='cafetaria:handle_unauthorized_access', redirect_field_name=None)
+def reviews_view(request):
+    reviews = Review.objects.all()
+
+    context = {
+        "reviews": reviews,
+    }
+    return render(request,"cafeadmin/reviews.html", context)
+
