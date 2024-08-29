@@ -39,10 +39,14 @@ INSTALLED_APPS = [
     "django.contrib.messages",
     "django.contrib.staticfiles",
 
+    #third-party
+  
+
     #custom-apps
     "myapps.account.apps.AccountConfig",
     "myapps.cafetaria.apps.CafetariaConfig",
     "cafeadmin.apps.CafeadminConfig",
+    
 ]
 
 # Uses custom user model defined in account app.

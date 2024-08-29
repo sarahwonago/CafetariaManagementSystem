@@ -30,6 +30,7 @@
     <h2>Thank you for your order!</h2>
     <p>Dear {{ order.user.username }},</p>
     <p>We are pleased to inform you that your payment for order #{{ order.id }} has been confirmed.</p>
+    <p>The Order will be ready in {{order.estimated_time}} minutes.</p>
 
     <h3 class="order-details" >Order Summary</h3>
     <p>Date: {{ order.created_at|date:"F j, Y, g:i a" }}</p>

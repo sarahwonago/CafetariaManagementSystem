@@ -5,11 +5,10 @@
 <section>
     <h2>Order Confirmation</h2>
 
-    <p>Thank you for your order! Your order number is:  {{ order }}.</p>
-    <p>Food will be delivered in {{order.estimated_time}} minutes</p>
-    <h5>@Current dinning-table: Table {{user.userdinningtable.dinning_table.table_number}}</h5>
+    <p>Thank you. Order received.Your order number is:  {{ order }}.</p>
+    <h5>Order is being processed.</h5>
 
-    <a href="{% url 'cafetaria:food' %}">Return to Home</a>
+    <a href="">Download Reciept</a>
     <a href="{% url 'cafetaria:order-reciept' order.id %}">View Reciept</a>
     
 </section>

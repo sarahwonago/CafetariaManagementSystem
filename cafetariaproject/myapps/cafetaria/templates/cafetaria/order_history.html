@@ -14,14 +14,16 @@
             <th>Status</th>
         </tr>
         {% if p_order %}
-        <tr>
-            <td>{{p_order.id}}</td>
-            <td>{{p_order.user.username}}</td>
-            <td>{{p_order.total_price}}</td>
-            <td>{{p_order.is_paid}}</td>
-            <td>{{p_order.estimated_time}}</td>
-            <td>{{p_order.status}}</td>
-        </tr>
+            {% for order in p_order %}
+            <tr>
+                <td>#{{order.id}}</td>
+                <td>{{order.user.username}}</td>
+                <td>{{order.total_price}}</td>
+                <td>{{order.is_paid}}</td>
+                <td>{{order.estimated_time}}</td>
+                <td>{{order.status}}</td>
+            </tr>
+            {% endfor %}
         {% else %}
         <tr>
             <td colspan="6">No Pending Order.</td>

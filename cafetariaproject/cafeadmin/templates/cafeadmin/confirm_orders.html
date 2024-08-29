@@ -5,6 +5,12 @@
 {% block content %}
 <section>
     <h3>#{{order}}</h3>
+    <h5>Order Items:</h5>
+    <ul>
+        {% for item in order.orderitems.all%}
+        <li>{{item.fooditem.name}}</li>
+        {% endfor %}
+    </ul>
     <form method="post">
         {% csrf_token %}
         {{form.as_p}}

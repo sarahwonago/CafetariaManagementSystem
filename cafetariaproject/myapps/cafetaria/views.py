@@ -1,7 +1,7 @@
 
 
 from django.contrib.auth.decorators import login_required
-from django.shortcuts import render, redirect, get_object_or_404, get_list_or_404
+from django.shortcuts import render, redirect, get_object_or_404, get_list_or_404, HttpResponse
 from django.contrib.auth.decorators import user_passes_test
 
 from .models import Category, FoodItem, Order, OrderItem, UserDinningTable
@@ -141,9 +141,15 @@ def checkout_view(request):
 
     order.is_paid = True 
     order.save()
+    
     user_dinning = UserDinningTable.objects.get(user = user)
     table = user_dinning.dinning_table.table_number
 
+    # reset the user dinning table to None after order is delivered
+    # user_dinning.dinning_table = None
+    # user_dinning.save()
+
+    
 
     return redirect("cafetaria:order-complete", order.id)
 
@@ -151,7 +157,11 @@ def checkout_view(request):
 @user_passes_test(is_customer, login_url='cafetaria:handle_unauthorized_access', redirect_field_name=None)
 def order_complete_view(request, order_id):
 
+    user = request.user
     order = get_object_or_404(Order, id=order_id)
+
+    if user != order.user:
+        return HttpResponse("Sorry, you are not allowed to access this content.")
 
     context = {
         "order": order
@@ -206,7 +216,7 @@ def order_history_view(request):
 
 
     try:
-        p_order = get_object_or_404(Order, user=user, is_paid=True, status="PENDING")
+        p_order = get_list_or_404(Order, user=user, is_paid=True, status="PENDING")
     except:
         p_order = None
 
