@@ -1,0 +1,13 @@
+{% extends 'cafetaria/_base.html' %}
+{% block title %}Review Order{% endblock title %}
+
+{% block content %}
+<section>
+    <h2>Review #{{order}}</h2>
+    <form method="post">
+        {% csrf_token %}
+        {{form.as_p}}
+        <button type="submit">Submit</button>
+    </form>
+</section>
+{% endblock content %}

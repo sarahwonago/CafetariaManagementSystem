@@ -1,0 +1,38 @@
+{% extends 'cafeadmin/_base.html' %}
+
+{% block title %}Order Reviews{% endblock title %}
+
+{% block content %}
+<section>
+    <h2>Order Reviews</h2>
+    <table>
+        <tr>
+            <th>Order</th>
+            <th>Rating</th>
+            <th>Comment</th>
+            <th>Food item</th>
+        </tr>
+        {% for review in reviews %}
+        <tr>
+           <td>{{review.order}}</td>
+           <td>{{review.rating}}</td>
+           <td>{{review.comment}}</td>
+           <td>
+            <ul>
+            {% for item in review.order.orderitems.all %}
+                <li>{{item.fooditem.name}}</li>
+            {% endfor %}
+            </ul>
+           </td>
+        </tr>
+        {% empty %}
+        <tr>
+            <td>No Reviews</td>
+            
+        </tr>
+        {% endfor %}
+    </table>
+    
+</section>
+
+{% endblock content %}
