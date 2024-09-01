@@ -1,5 +1,6 @@
 from django.db import models
 from django.contrib.auth import get_user_model
+from django.utils import timezone
 from django.core.validators import MinValueValidator, MaxValueValidator
 
 User = get_user_model()
@@ -177,3 +178,54 @@ class Review(models.Model):
 
     def __str__(self):
         return f"Review for Order {self.order.id}"
+
+
+class CustomerPoint(models.Model):
+    """
+    Defines the customer points.
+    """
+
+    class Meta:
+        verbose_name_plural = "CustomerPoints"
+    
+    user = models.OneToOneField(User, on_delete=models.CASCADE, related_name="customerpoints")
+    points = models. PositiveIntegerField(default=0)
+
+class Transaction(models.Model):
+    """
+    Defines when each customer point was awarded.
+    """
+
+    class Meta:
+        verbose_name_plural = "Transaction"
+
+    customer_point = models.ForeignKey(CustomerPoint, on_delete=models.CASCADE)
+    amount = models.DecimalField(max_digits=10, decimal_places=2) # order total 
+    points_earned = models.PositiveIntegerField() # points awarded based on the order total
+    date = models.DateTimeField(auto_now_add=True)
+
+
+class SpecialOffer(models.Model):
+    """
+    Defines special offer.
+    """
+
+    class Meta:
+        verbose_name_plural = "SpecialOffers"
+
+    fooditem = models.ForeignKey(
+        FoodItem,
+        related_name="specialoffer",
+        on_delete=models.CASCADE
+    )
+    discount_percentage = models.DecimalField(max_digits=5, decimal_places=2)  # e.g., 20.00 for 20%
+    start_date = models.DateTimeField()
+    end_date = models.DateTimeField()
+    description = models.TextField(blank=True, null=True)
+
+    def is_active(self):
+        now = timezone.now()
+        return self.start_date <= now <= self.end_date
+
+    def __str__(self):
+        return f"{self.menu_item.name} - {self.discount_percentage}% Off"

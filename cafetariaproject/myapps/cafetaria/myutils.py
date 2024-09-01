@@ -37,3 +37,9 @@ def decrease_orderitem_quantity(orderitem:OrderItem):
       orderitem.save()
 
       return orderitem
+
+def generate_receipt(order_id):
+      # use signals to trigger receipt generation when an order status is
+      # changed to complete. Print the receipt from the printer and also send it to the 
+      # customer notifications. 
+      pass

@@ -142,6 +142,8 @@ def checkout_view(request):
 
     order.is_paid = True 
     order.save()
+
+    # assign points to customer
     
     user_dinning = UserDinningTable.objects.get(user = user)
     table = user_dinning.dinning_table.table_number
@@ -279,3 +281,5 @@ def review_dish_view(request, order_id):
     }
 
     return render(request, 'cafetaria/review_order.html', context)
+
+
