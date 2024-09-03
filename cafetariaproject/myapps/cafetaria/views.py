@@ -79,6 +79,21 @@ def food_items_view(request):
     }
     return render(request, "cafetaria/food_items.html", context)
 
+
+
+@login_required
+@user_passes_test(is_customer, login_url='cafetaria:handle_unauthorized_access', redirect_field_name=None)
+def food_detail_view(request, food_id):
+
+    food = get_object_or_404(FoodItem, id=food_id)
+    
+
+    context = {
+        "food":food,
+        
+    }
+    return render(request, "cafetaria/food_detail.html", context)
+
 @login_required
 @user_passes_test(is_customer, login_url='cafetaria:handle_unauthorized_access', redirect_field_name=None)
 def addtocart_view(request, food_id):

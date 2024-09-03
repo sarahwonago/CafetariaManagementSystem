@@ -16,7 +16,7 @@
             <ul>
                 <li id="food-item-{{food.id}}">
                     <div>
-                        <h4>{{food.name}} | Ksh.{{food.price}}</h4>
+                        <h4> <a href="{% url 'cafetaria:food-detail' food.id %}">{{food.name}}</a> | Ksh.{{food.price}}</h4>
                         <p>{{food.description}}</p>
                         <p><span><a href="{% url 'cafetaria:addtocart' food.id %}#food-item-{{food.id}}">Add To Cart</a></span></p>
                         

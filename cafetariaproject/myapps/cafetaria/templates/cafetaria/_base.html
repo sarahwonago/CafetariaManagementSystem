@@ -16,6 +16,9 @@
                 </form>
             </li>
             <li>
+                <a href="{% url 'cafetaria:food' %}">Menu </a>
+            </li>
+            <li>
                 <a href="{% url 'cafetaria:home' %}">Dinning Table </a>
             </li>
             <li>
@@ -23,9 +26,6 @@
             </li>
             <li>
                 <a href="">Notifications </a>
-            </li>
-            <li>
-                <a href="{% url 'cafetaria:food' %}">Food items </a>
             </li>
             <li>
                 <a href="{% url 'cafetaria:cart' %}">Cart({{cart_item_count}})</a>
