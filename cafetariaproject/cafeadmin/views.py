@@ -3,7 +3,7 @@ from django.contrib.auth.decorators import user_passes_test, login_required
 from django.db.models import Q
 from django.contrib import messages
 
-from myapps.cafetaria.models import Category, FoodItem, DiningTable, Order, Review
+from myapps.cafetaria.models import Category, FoodItem, DiningTable, Order, Review, Notification
 
 from .forms import CategoryForm, FoodItemForm, DinningTableForm, UpdateOrderForm
 
@@ -329,6 +329,11 @@ def confirm_orders_view(request, order_id):
         
         if form.is_valid():
             form.save()
+
+            # sends notification to user
+            if order.status == 'COMPLETE':
+                message = f"Your order # {order.id} has been confirmed. "
+                notification = Notification.objects.create(user=order.user,message=message)
             return redirect("cafeadmin:customer-orders")
     else:
         form= UpdateOrderForm(instance=order)

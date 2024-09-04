@@ -1,0 +1,20 @@
+{% extends 'cafetaria/_base.html' %}
+{% block title %}Notifications{% endblock title %}
+
+{% block content %}
+<section>
+    
+    <h2>Notifications</h2>
+    {% if notifications %}
+        <ul>
+        {% for notification in notifications %}
+            <p>{{notification.created_at}}</p>
+            <li>{{notification.message}} {% if notification.is_read%} {% else %} <a href="{% url 'cafetaria:mark-read' notification.id  %}">Mark as Read</a> {% endif %}</li>
+        {% endfor %}
+        </ul>
+    {% else %}
+    <p>You have no notifications</p>
+    {% endif %}
+    
+</section>
+{% endblock content %}

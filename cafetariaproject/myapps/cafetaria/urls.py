@@ -5,12 +5,15 @@ from django.urls import path
 from .views import (home_view, handle_unauthorized_access, addtocart_view, cart_view, 
                     food_items_view,checkout_view, order_complete_view, increase_orderitem_view,
                     decrease_orderitem_view, remove_item_view, order_history_view, order_receipt_view,
-                    review_dish_view, food_detail_view, customer_points_view)
+                    review_dish_view, food_detail_view, customer_points_view, customer_notifications_view,
+                    marknotification_read_view)
 
 app_name="cafetaria"
 
 urlpatterns=[
     path("", home_view, name="home"),
+    path("notifications/", customer_notifications_view, name="notifications"),
+    path("mark-as-read/<int:notification_id>/", marknotification_read_view, name="mark-read"),
     path("points/", customer_points_view, name="points"),
     path("addtocart/<int:food_id>/", addtocart_view, name="addtocart"),
     path("food/", food_items_view, name="food"),

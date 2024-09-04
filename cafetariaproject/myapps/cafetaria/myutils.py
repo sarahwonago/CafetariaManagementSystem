@@ -48,7 +48,7 @@ def assign_points(order:Order):
     total_price = order.total_price
     customer_point, created = CustomerPoint.objects.get_or_create(user=user)
     points = calculate_points(total_price)
-    customer_point.points = points
+    customer_point.points += points
     customer_point.save()
 
     transaction = Transaction.objects.create(customer_point=customer_point,

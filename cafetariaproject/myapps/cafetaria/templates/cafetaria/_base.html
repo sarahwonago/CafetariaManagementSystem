@@ -25,7 +25,7 @@
                 <a href="">Special Offers </a>
             </li>
             <li>
-                <a href="">Notifications </a>
+                <a href="{% url 'cafetaria:notifications' %}">Notifications({{notification}}) </a>
             </li>
             <li>
                 <a href="{% url 'cafetaria:cart' %}">Cart({{cart_item_count}})</a>

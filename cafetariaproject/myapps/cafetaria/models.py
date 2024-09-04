@@ -191,6 +191,9 @@ class CustomerPoint(models.Model):
     user = models.OneToOneField(User, on_delete=models.CASCADE, related_name="customerpoints")
     points = models. PositiveIntegerField(default=0)
 
+    def __str__(self):
+        return f"{self.user.username} - {self.points}"
+
 class Transaction(models.Model):
     """
     Defines when each customer point was awarded.
@@ -198,11 +201,15 @@ class Transaction(models.Model):
 
     class Meta:
         verbose_name_plural = "Transaction"
+        ordering = ["-created_at"]
 
     customer_point = models.ForeignKey(CustomerPoint, on_delete=models.CASCADE)
     amount = models.DecimalField(max_digits=10, decimal_places=2) # order total 
     points_earned = models.PositiveIntegerField() # points awarded based on the order total
     created_at = models.DateTimeField(auto_now_add=True)
+
+    def __str__(self):
+        return f"{self.customer_point.user} awarded {self.points_earned} points"
 
 
 class SpecialOffer(models.Model):
@@ -229,3 +236,18 @@ class SpecialOffer(models.Model):
 
     def __str__(self):
         return f"{self.menu_item.name} - {self.discount_percentage}% Off"
+    
+
+class Notification(models.Model):
+    """
+    Notification model.
+    """
+
+    class Meta:
+        verbose_name_plural = "Notifications"
+        ordering = ["-created_at"]
+
+    user = models.ForeignKey(User, on_delete=models.CASCADE, related_name="notifications")
+    message = models.TextField()
+    is_read = models.BooleanField(default=False)
+    created_at = models.DateTimeField(auto_now_add=True)

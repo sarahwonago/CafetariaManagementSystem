@@ -6,7 +6,7 @@ from django.shortcuts import render, redirect, get_object_or_404, get_list_or_40
 from django.contrib.auth.decorators import user_passes_test
 
 from .models import (Category, FoodItem, Order, OrderItem, UserDinningTable, 
-                     Review, CustomerPoint, Transaction)
+                     Review, CustomerPoint, Notification)
 from .forms import UserDinningForm, ReviewForm
 from .myutils import (calculate_total_price,calculate_total_item_price, 
                       increase_orderitem_quantity, decrease_orderitem_quantity, 
@@ -318,3 +318,26 @@ def customer_points_view(request):
     }
 
     return render(request, 'cafetaria/customer_points.html', context)
+
+@login_required
+@user_passes_test(is_customer, login_url='cafetaria:handle_unauthorized_access', redirect_field_name=None)
+def customer_notifications_view(request):
+    notifications = get_list_or_404(Notification, user=request.user)
+
+
+    context = {
+        "notifications":notifications,
+    }
+
+    return render(request, 'cafetaria/notifications.html', context)
+
+@login_required
+@user_passes_test(is_customer, login_url='cafetaria:handle_unauthorized_access', redirect_field_name=None)
+def marknotification_read_view(request, notification_id):
+
+    notification = get_object_or_404(Notification,id=notification_id)
+
+    notification.is_read = True
+    notification.save()
+
+    return redirect("notifications")
