@@ -202,7 +202,7 @@ class Transaction(models.Model):
     customer_point = models.ForeignKey(CustomerPoint, on_delete=models.CASCADE)
     amount = models.DecimalField(max_digits=10, decimal_places=2) # order total 
     points_earned = models.PositiveIntegerField() # points awarded based on the order total
-    date = models.DateTimeField(auto_now_add=True)
+    created_at = models.DateTimeField(auto_now_add=True)
 
 
 class SpecialOffer(models.Model):
