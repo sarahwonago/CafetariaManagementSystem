@@ -5,9 +5,12 @@ from django.contrib.auth.decorators import login_required
 from django.shortcuts import render, redirect, get_object_or_404, get_list_or_404, HttpResponse
 from django.contrib.auth.decorators import user_passes_test
 
-from .models import Category, FoodItem, Order, OrderItem, UserDinningTable, Review
+from .models import (Category, FoodItem, Order, OrderItem, UserDinningTable, 
+                     Review, CustomerPoint, Transaction)
 from .forms import UserDinningForm, ReviewForm
-from .myutils import calculate_total_price,calculate_total_item_price, increase_orderitem_quantity, decrease_orderitem_quantity
+from .myutils import (calculate_total_price,calculate_total_item_price, 
+                      increase_orderitem_quantity, decrease_orderitem_quantity, 
+                      assign_points)
 
 
 #  defines a role based  redirect function for customers
@@ -159,6 +162,8 @@ def checkout_view(request):
     order.save()
 
     # assign points to customer
+    transaction = assign_points(order)
+
     
     user_dinning = UserDinningTable.objects.get(user = user)
     table = user_dinning.dinning_table.table_number
@@ -297,4 +302,19 @@ def review_dish_view(request, order_id):
 
     return render(request, 'cafetaria/review_order.html', context)
 
+@login_required
+@user_passes_test(is_customer, login_url='cafetaria:handle_unauthorized_access', redirect_field_name=None)
+def customer_points_view(request):
+    user = request.user
 
+    try:
+        customer_points = get_object_or_404(CustomerPoint, user=user)
+        points = customer_points.points
+    except CustomerPoint.DoesNotExist:
+        points = 0
+
+    context = {
+        "points":points,
+    }
+
+    return render(request, 'cafetaria/customer_points.html', context)
